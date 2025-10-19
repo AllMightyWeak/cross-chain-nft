@@ -5,7 +5,7 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.9.3/contr
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.9.3/contracts/token/ERC721/utils/ERC721Holder.sol";
 
 contract SimpleNFTTransfer is ERC721Holder {
-    event TokenLocked(uint tokenId, address sender);
+    event TokenLocked(uint tokenId, address sender, address addressInChainB);
 
     /**
      * @notice Transfer any NFT to this contract
@@ -13,6 +13,7 @@ contract SimpleNFTTransfer is ERC721Holder {
      */
     function transferNFTToContract(
         address _nftContract,
+        address addressInChainB,
         uint256 _tokenId
     ) external returns (bool) {
         IERC721 nft = IERC721(_nftContract);
@@ -23,7 +24,7 @@ contract SimpleNFTTransfer is ERC721Holder {
         // Transfer NFT to this contract
         nft.safeTransferFrom(msg.sender, address(this), _tokenId);
         
-        emit TokenLocked(_tokenId, msg.sender);
+        emit TokenLocked(_tokenId, msg.sender, addressInChainB);
         return true;
     }
     
